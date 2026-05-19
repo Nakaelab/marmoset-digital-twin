@@ -92,6 +92,8 @@
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
+  <!-- model-viewer for 3D GLB display -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
   
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
@@ -241,6 +243,36 @@
   </div>
 </section>
 <!-- End teaser -->
+
+<!-- 3D Environment Model Viewer -->
+<section class="hero is-small is-light">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered">3D Experimental Environment</h2>
+      <p class="has-text-centered" style="margin-bottom:1rem;">Interactive 3D model of the marmoset recording environment. Drag to rotate, scroll to zoom.</p>
+      <div style="display:flex; justify-content:center;">
+        <model-viewer
+          src="output_animate_env.glb"
+          alt="3D model of the marmoset experimental environment"
+          auto-rotate
+          camera-controls
+          ar
+          shadow-intensity="1"
+          style="width:100%; max-width:800px; height:500px; background:#1a1a2e; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.3);"
+          exposure="1"
+          environment-image="neutral">
+          <div class="progress-bar hide" slot="progress-bar">
+            <div class="update-bar"></div>
+          </div>
+        </model-viewer>
+      </div>
+      <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
+        <b>Figure:</b> 3D digital-twin environment model reconstructed from engineering blueprints of the marmoset recording room (Blender, blueprint-based alignment).
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End 3D Environment Model Viewer -->
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
