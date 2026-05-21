@@ -598,8 +598,16 @@ code {
 }
 
 
+.marmoset-model {
+  height: 900px;
+}
+
 /* Mobile Responsive Improvements */
 @media screen and (max-width: 768px) {
+  .marmoset-model {
+    height: 400px;
+  }
+
   .hero-body {
     padding: 2rem 1rem;
   }
