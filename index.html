@@ -227,7 +227,21 @@
 </div>
 </section>
 
-
+<!-- Teaser video / image -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- TODO: Replace with your teaser video or image -->
+      <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
+        <source src="static/videos/banner_video.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        The 3D digital-twin marmoset framework integrates CT-derived body meshes, high-fidelity fur rendering, rigged skeletal animation, multi-view behavioral video, 2D/3D pose estimation, and a reconstructed experimental environment — enabling a fully interactive virtual replica of marmoset behavior.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser -->
 
 <!-- 3D Environment Model Viewer -->
 <section class="hero is-small is-light">
@@ -238,7 +252,7 @@
       <div style="display:flex; justify-content:center;">
         <model-viewer
           id="marmoset-viewer"
-          src="output.glb"
+          src="output%20(1).glb"
           alt="3D model of the marmoset"
           camera-controls
           ar
