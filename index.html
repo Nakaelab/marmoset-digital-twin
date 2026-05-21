@@ -306,6 +306,51 @@
 </script>
 <!-- End 3D Environment Model Viewer -->
 
+<!-- 3D Marmoset Model Viewer -->
+<section class="hero is-small">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <h2 class="title is-3 has-text-centered">3D Marmoset Model</h2>
+      <p class="has-text-centered" style="margin-bottom:1rem;">Interactive 3D model of the marmoset. Drag to rotate, scroll to zoom.</p>
+      <div style="display:flex; justify-content:center;">
+        <model-viewer
+          id="marmoset-body-viewer"
+          src="3dsimp_comp%20(1).glb"
+          alt="3D model of the marmoset body"
+          camera-controls
+          autoplay
+          shadow-intensity="1"
+          camera-orbit="0deg 75deg 2m"
+          field-of-view="45deg"
+          style="width:100%; max-width:900px; height:650px; background:#a5a89c; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.3);"
+          exposure="1.2"
+          environment-image="neutral">
+          <div class="progress-bar hide" slot="progress-bar">
+            <div class="update-bar"></div>
+          </div>
+        </model-viewer>
+      </div>
+      <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
+        <b>Figure:</b> 3D marmoset body model reconstructed from CT imaging with fur and rigged skeletal structure.
+      </h2>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mv2 = document.getElementById('marmoset-body-viewer');
+    if (mv2) {
+      mv2.addEventListener('load', function() {
+        mv2.play({ repetitions: Infinity });
+      });
+      mv2.addEventListener('finished', function() {
+        mv2.play({ repetitions: Infinity });
+      });
+    }
+  });
+</script>
+<!-- End 3D Marmoset Model Viewer -->
+
 <!-- Paper abstract -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
