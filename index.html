@@ -319,7 +319,7 @@
           alt="3D model of the marmoset body"
           camera-controls
           shadow-intensity="1"
-          camera-orbit="0deg 90deg 200%"
+          camera-orbit="0deg 90deg 500%"
           field-of-view="60deg"
           style="width:100%; max-width:900px; height:900px; background:#ffffff; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.3);"
           exposure="1.2"
@@ -340,20 +340,7 @@
     const mv2 = document.getElementById('marmoset-body-viewer');
     if (mv2) {
       mv2.addEventListener('load', function() {
-        // バウンディングボックスからカメラ距離を自動計算して全体表示
-        try {
-          const bb = mv2.model.getBoundingBoxCenter();
-          const size = mv2.getDiagonalSize();
-          if (size) {
-            const radius = size * 1.5;
-            mv2.cameraOrbit = '0deg 90deg ' + radius + 'm';
-            mv2.jumpCameraToGoal();
-          }
-        } catch(e) {
-          // fallback: フィールドオブビューを広げて全体を表示
-          mv2.fieldOfView = '80deg';
-          mv2.jumpCameraToGoal();
-        }
+        mv2.jumpCameraToGoal();
       });
     }
   });
