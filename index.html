@@ -283,6 +283,20 @@
     if (mv) {
       mv.addEventListener('load', function() {
         mv.play({ repetitions: Infinity });
+
+        // PaletteMaterial006 を半透明化
+        const materials = mv.model && mv.model.materials;
+        if (materials) {
+          materials.forEach(function(mat) {
+            if (mat.name === 'PaletteMaterial006') {
+              const pbr = mat.pbrMetallicRoughness;
+              if (pbr) {
+                mat.setAlphaMode('BLEND');
+                pbr.setBaseColorFactor([1, 1, 1, 0.2]);
+              }
+            }
+          });
+        }
       });
       mv.addEventListener('finished', function() {
         mv.play({ repetitions: Infinity });
