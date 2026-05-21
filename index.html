@@ -283,19 +283,54 @@
       mv.addEventListener('load', function() {
         mv.play({ repetitions: Infinity });
 
-        // PaletteMaterial006 を半透明化
-        const materials = mv.model && mv.model.materials;
-        if (materials) {
-          materials.forEach(function(mat) {
-            if (mat.name === 'PaletteMaterial006') {
-              const pbr = mat.pbrMetallicRoughness;
-              if (pbr) {
-                mat.setAlphaMode('BLEND');
-                pbr.setBaseColorFactor([1, 1, 1, 0.2]);
-              }
+        // ログ出力してマテリアル／メッシュ名を確認（必要に応じて名前を調整）
+        try {
+          const model = mv.model;
+          if (!model) { console.warn('model not available'); return; }
+          console.log('Materials:', model.materials ? model.materials.map(m => m && m.name) : 'no materials');
+          model.scene.traverse(node => {
+            if (node.isMesh) {
+              const matNames = Array.isArray(node.material) ? node.material.map(m=>m && m.name) : (node.material && node.material.name) || '(no name)';
+              console.log('mesh:', node.name, ' material:', matNames);
             }
           });
-        }
+
+          // 対象判定（コンソールの出力に合わせて名前を追加してください）
+          const targetMaterialNames = ['PaletteMaterial006'];
+          const targetMeshNameIncludes = ['Wall','wall','Enclosure','enclosure','囲い','panel'];
+
+          // 対象メッシュだけマテリアルをクローンして透過設定を適用（共有マテリアルによる全体透過を防ぐ）
+          model.scene.traverse(node => {
+            if (!node.isMesh) return;
+            let mats = Array.isArray(node.material) ? node.material : [node.material];
+            const isTarget = mats.some(mat => mat && targetMaterialNames.includes(mat.name)) ||
+                             targetMeshNameIncludes.some(s => node.name && node.name.includes(s));
+            if (!isTarget) return;
+
+            // マテリアルをクローン
+            if (Array.isArray(node.material)) {
+              node.material = node.material.map(m => m ? m.clone() : m);
+              mats = node.material;
+            } else {
+              node.material = node.material ? node.material.clone() : node.material;
+              mats = [node.material];
+            }
+
+            // 透過を適用
+            mats.forEach(mat => {
+              try {
+                if (mat.setAlphaMode) mat.setAlphaMode('BLEND');
+                if (mat.pbrMetallicRoughness && mat.pbrMetallicRoughness.setBaseColorFactor) {
+                  const base = mat.pbrMetallicRoughness.baseColorFactor || [1,1,1,1];
+                  mat.pbrMetallicRoughness.setBaseColorFactor([base[0], base[1], base[2], 0.25]);
+                } else {
+                  if ('transparent' in mat) { mat.transparent = true; mat.opacity = 0.25; mat.depthWrite = false; }
+                }
+              } catch(e) { console.warn('apply transparency failed', e); }
+            });
+          });
+
+        } catch(e) { console.error(e); }
       });
       mv.addEventListener('finished', function() {
         mv.play({ repetitions: Infinity });
