@@ -319,7 +319,7 @@
           alt="3D model of the marmoset body"
           camera-controls
           shadow-intensity="1"
-          camera-target="0m 0m 0m"
+          camera-target="0m -0.12m 0m"
           camera-orbit="0deg 90deg 3m"
           field-of-view="60deg"
           style="width:100%; max-width:900px; height:900px; background:#ffffff; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.3);"
@@ -330,17 +330,6 @@
           </div>
         </model-viewer>
       </div>
-      
-      <!-- 調整用の一時UI -->
-      <div id="camera-debugger" style="text-align:center; padding:10px; background:#eee; border-radius:8px; margin-top:10px; max-width:900px; margin-left:auto; margin-right:auto;">
-        <b>🔍 位置調整スライダー（最適な位置を探してください）</b><br>
-        左右 (X): <input type="range" id="camX" min="-1" max="1" step="0.01" value="0"> <span id="valX">0</span>m<br>
-        上下 (Y): <input type="range" id="camY" min="-1" max="1" step="0.01" value="0"> <span id="valY">0</span>m<br>
-        前後 (Z): <input type="range" id="camZ" min="-1" max="1" step="0.01" value="0"> <span id="valZ">0</span>m<br>
-        距離 (Orbit): <input type="range" id="camDist" min="0.5" max="10" step="0.1" value="3"> <span id="valDist">3</span>m<br>
-        <span style="color:red; font-weight:bold;">この値が決まったら教えてください！: <span id="camResult">target: 0m 0m 0m, orbit: 3m</span></span>
-      </div>
-
       <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
         <b>Figure:</b> 3D marmoset body model reconstructed from CT imaging with fur and rigged skeletal structure.
       </h2>
@@ -354,31 +343,6 @@
       mv2.addEventListener('load', function() {
         mv2.jumpCameraToGoal();
       });
-
-      // スライダー連動スクリプト
-      function updateCamera() {
-        const x = document.getElementById('camX').value;
-        const y = document.getElementById('camY').value;
-        const z = document.getElementById('camZ').value;
-        const d = document.getElementById('camDist').value;
-        
-        document.getElementById('valX').innerText = x;
-        document.getElementById('valY').innerText = y;
-        document.getElementById('valZ').innerText = z;
-        document.getElementById('valDist').innerText = d;
-        
-        const target = x + 'm ' + y + 'm ' + z + 'm';
-        const orbit = '0deg 90deg ' + d + 'm';
-        mv2.cameraTarget = target;
-        mv2.cameraOrbit = orbit;
-        
-        document.getElementById('camResult').innerText = 'target: ' + target + ', orbit: ' + orbit;
-      }
-
-      document.getElementById('camX').addEventListener('input', updateCamera);
-      document.getElementById('camY').addEventListener('input', updateCamera);
-      document.getElementById('camZ').addEventListener('input', updateCamera);
-      document.getElementById('camDist').addEventListener('input', updateCamera);
     }
   });
 </script>
