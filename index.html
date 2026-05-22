@@ -309,7 +309,7 @@
             const transparentAlphas = {
               'PaletteMaterial001': 0.2,
               'PaletteMaterial002': 0.2, // camera plates / trays (high transparency)
-              'PaletteMaterial003': 1.0,
+              'PaletteMaterial003': 0.8,
               'PaletteMaterial004': 0.8, // green wall (less transparent / more visible)
               'PaletteMaterial005': 0.2,
               'PaletteMaterial006': 0.2,
@@ -347,9 +347,10 @@
         console.log('marmoset-viewer Auto Camera Target:', mv.getCameraTarget());
       }, 500);
 
-      // Apply default transparency values upon loading (PaletteMaterial002 and PaletteMaterial004)
+      // Apply default transparency values upon loading (PaletteMaterial002, PaletteMaterial003, and PaletteMaterial004)
       const defaultTransparencies = {
         'PaletteMaterial002': true,
+        'PaletteMaterial003': true,
         'PaletteMaterial004': true
       };
 
