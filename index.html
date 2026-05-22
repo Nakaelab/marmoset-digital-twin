@@ -255,6 +255,11 @@
           src="output%20(1).glb"
           alt="3D model of the marmoset"
           camera-controls
+          disable-pan
+          camera-target="0m 0.85m 0.11m"
+          min-camera-orbit="auto auto 1.0m"
+          max-camera-orbit="auto auto 8.0m"
+          zoom-sensitivity="0.2"
           ar
           autoplay
           animation-name="NF_Armature_lowpoly"
@@ -276,30 +281,30 @@
         <p class="subtitle is-6 has-text-centered" style="margin-bottom: 1.25rem; color: #666;">
           各マテリアルの透過（半透明）状態を切り替えて、どのマテリアルがどのパーツに対応しているか確認できます。
         </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; justify-items: start; max-width: 800px; margin: 0 auto; padding-left: 20px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; justify-items: start; max-width: 800px; margin: 0 auto; padding-left: 20px;">
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-1" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial001', this.checked)">
-            PaletteMaterial001 (Cube - 壁・床など)
+            PaletteMaterial001 (緑の壁・床)
           </label>
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-2" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial002', this.checked)">
-            PaletteMaterial002 (Cube.007)
+            PaletteMaterial002 (カメラアクリル板・透明トレイ)
           </label>
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-3" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial003', this.checked)">
-            PaletteMaterial003 (Cube.024)
+            PaletteMaterial003 (ケージの金属フレーム)
           </label>
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-4" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial004', this.checked)">
-            PaletteMaterial004 (Cube.010)
+            PaletteMaterial004 (部屋の白い柱・壁の支え棒)
           </label>
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-5" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial005', this.checked)">
-            PaletteMaterial005 (Cylinder.017)
+            PaletteMaterial005 (天井の吊り下げ照明・電球)
           </label>
           <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
             <input type="checkbox" id="toggle-mat-6" style="margin-right: 8px; transform: scale(1.1);" checked onchange="window.setMaterialTransparency('PaletteMaterial006', this.checked)">
-            PaletteMaterial006 (Cylinder.016 - 囲い)
+            PaletteMaterial006 (天井照明板の白いスリット・縞模様)
           </label>
         </div>
       </div>
@@ -346,6 +351,11 @@
     function initModelData() {
       console.log('model-viewer loaded');
       mv.play({ repetitions: Infinity });
+
+      // Print auto-calculated camera target for debugging
+      setTimeout(() => {
+        console.log('marmoset-viewer Auto Camera Target:', mv.getCameraTarget());
+      }, 500);
 
       // Synchronize material state with checkboxes upon loading
       const materialNames = [
@@ -405,10 +415,13 @@
           src="3dsimp_comp%20(1).glb"
           alt="3D model of the marmoset body"
           camera-controls
+          disable-pan
+          zoom-sensitivity="0.2"
           shadow-intensity="1"
           camera-target="0m -0.12m 0m"
           camera-orbit="0deg 90deg 1m"
-          max-camera-orbit="auto auto 100m"
+          min-camera-orbit="auto auto 0.4m"
+          max-camera-orbit="auto auto 1.5m"
           field-of-view="60deg"
           style="width:100%; max-width:900px; background:#ffffff; border-radius:12px; box-shadow:0 8px 32px rgba(0,0,0,0.3);"
           exposure="1.2"
@@ -430,6 +443,7 @@
     if (mv2) {
       mv2.addEventListener('load', function() {
         mv2.jumpCameraToGoal();
+        console.log('marmoset-body-viewer Camera Target:', mv2.getCameraTarget());
       });
     }
   });
