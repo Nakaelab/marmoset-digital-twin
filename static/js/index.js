@@ -124,6 +124,28 @@ document.addEventListener('DOMContentLoaded', function() {
     setupVideoCarouselAutoplay();
 });
 
+let cameraControlInterval = null;
+
+window.startCameraControl = function(viewerId, action) {
+    // Clear any existing active control loop
+    window.stopCameraControl();
+    
+    // Execute action immediately on pointer down
+    window.controlCamera(viewerId, action);
+    
+    // Start continuous execution loop every 50ms
+    cameraControlInterval = setInterval(function() {
+        window.controlCamera(viewerId, action);
+    }, 50);
+};
+
+window.stopCameraControl = function() {
+    if (cameraControlInterval) {
+        clearInterval(cameraControlInterval);
+        cameraControlInterval = null;
+    }
+};
+
 // Camera controls helper for model-viewer overlay buttons
 window.controlCamera = function(viewerId, action) {
     const mv = document.getElementById(viewerId);
@@ -133,9 +155,9 @@ window.controlCamera = function(viewerId, action) {
     if (!orbit) return;
     
     let { theta, phi, radius } = orbit;
-    const thetaStep = 0.2; // radians (about 11 degrees)
-    const phiStep = 0.15;  // radians
-    const zoomFactor = 0.85; // multiplier for zoom in / zoom out
+    const thetaStep = 0.05; // radians (about 2.8 degrees)
+    const phiStep = 0.04;  // radians (about 2.3 degrees)
+    const zoomFactor = 0.98; // multiplier for zoom in / zoom out
     
     switch(action) {
         case 'left':
