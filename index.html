@@ -252,7 +252,7 @@
       <div style="display:flex; justify-content:center;">
         <model-viewer
           id="marmoset-viewer"
-          src="output%20(1).glb"
+          src="outputkkj.glb"
           alt="3D model of the marmoset"
           camera-controls
           disable-pan
@@ -275,39 +275,7 @@
           </div>
         </model-viewer>
       </div>
-      <!-- Control UI Panel -->
-      <div id="debug-panel" class="box" style="margin-top: 1.5rem; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; background-color: #fcfcfc; max-width: 900px; margin-left: auto; margin-right: auto;">
-        <h3 class="title is-5 has-text-centered" style="margin-bottom: 0.5rem;">⚙️ マテリアル透過テスト (Material Transparency Test)</h3>
-        <p class="subtitle is-6 has-text-centered" style="margin-bottom: 1.25rem; color: #666;">
-          各マテリアルの透過（半透明）状態を切り替えて、どのマテリアルがどのパーツに対応しているか確認できます。
-        </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; justify-items: start; max-width: 800px; margin: 0 auto; padding-left: 20px;">
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-1" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial001', this.checked)">
-            PaletteMaterial001 (緑の壁・床)
-          </label>
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-2" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial002', this.checked)">
-            PaletteMaterial002 (カメラアクリル板・透明トレイ)
-          </label>
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-3" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial003', this.checked)">
-            PaletteMaterial003 (ケージの金属フレーム)
-          </label>
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-4" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial004', this.checked)">
-            PaletteMaterial004 (部屋の白い柱・壁の支え棒)
-          </label>
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-5" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial005', this.checked)">
-            PaletteMaterial005 (天井の吊り下げ照明・電球)
-          </label>
-          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
-            <input type="checkbox" id="toggle-mat-6" style="margin-right: 8px; transform: scale(1.1);" checked onchange="window.setMaterialTransparency('PaletteMaterial006', this.checked)">
-            PaletteMaterial006 (天井照明板の白いスリット・縞模様)
-          </label>
-        </div>
-      </div>
+
       <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
         <b>Figure:</b> 3D digital-twin environment model reconstructed from engineering blueprints of the marmoset recording room (Blender, blueprint-based alignment).
       </h2>
@@ -334,7 +302,18 @@
           material.setAlphaMode('BLEND');
           if (pbr) {
             const base = pbr.baseColorFactor || [1, 1, 1, 1];
-            pbr.setBaseColorFactor([base[0], base[1], base[2], 0.2]);
+            // Define custom transparency level for each material
+            const transparentAlphas = {
+              'PaletteMaterial001': 0.2,
+              'PaletteMaterial002': 0.2, // camera plates / trays (high transparency)
+              'PaletteMaterial003': 0.2,
+              'PaletteMaterial004': 0.55, // green wall (less transparent / more visible)
+              'PaletteMaterial005': 0.2,
+              'PaletteMaterial006': 0.2,
+              'PaletteMaterial007': 0.2
+            };
+            const alpha = transparentAlphas[materialName] || 0.2;
+            pbr.setBaseColorFactor([base[0], base[1], base[2], alpha]);
           }
           console.log('Set ' + materialName + ' to transparent');
         } else {
@@ -348,7 +327,15 @@
       }
     };
 
+    let isInitialized = false;
+    let checkSceneInterval;
+
     function initModelData() {
+      if (isInitialized) return;
+      isInitialized = true;
+      if (checkSceneInterval) {
+        clearInterval(checkSceneInterval);
+      }
       console.log('model-viewer loaded');
       mv.play({ repetitions: Infinity });
 
@@ -357,42 +344,46 @@
         console.log('marmoset-viewer Auto Camera Target:', mv.getCameraTarget());
       }, 500);
 
-      // Synchronize material state with checkboxes upon loading
-      const materialNames = [
-        'PaletteMaterial001',
-        'PaletteMaterial002',
-        'PaletteMaterial003',
-        'PaletteMaterial004',
-        'PaletteMaterial005',
-        'PaletteMaterial006'
-      ];
+      // Apply default transparency values upon loading (PaletteMaterial002 and PaletteMaterial004)
+      const defaultTransparencies = {
+        'PaletteMaterial002': true,
+        'PaletteMaterial004': true
+      };
 
       const model = mv.model;
       if (model) {
-        materialNames.forEach((name, index) => {
-          const chk = document.getElementById('toggle-mat-' + (index + 1));
-          if (chk) {
-            window.setMaterialTransparency(name, chk.checked);
-          }
+        const materialNames = [
+          'PaletteMaterial001',
+          'PaletteMaterial002',
+          'PaletteMaterial003',
+          'PaletteMaterial004',
+          'PaletteMaterial005',
+          'PaletteMaterial006',
+          'PaletteMaterial007'
+        ];
+        materialNames.forEach((name) => {
+          const isTransparent = !!defaultTransparencies[name];
+          window.setMaterialTransparency(name, isTransparent);
         });
       }
     }
 
     mv.addEventListener('load', initModelData);
 
-    const checkSceneInterval = setInterval(() => {
+    checkSceneInterval = setInterval(() => {
       const model = mv.model;
       if (model && model.materials && model.materials.length > 0) {
-        const material = model.materials.find(m => m.name === 'PaletteMaterial006');
+        const material = model.materials.find(m => m.name === 'PaletteMaterial007');
         if (material) {
-          clearInterval(checkSceneInterval);
           initModelData();
         }
       }
     }, 200);
 
     setTimeout(() => {
-      clearInterval(checkSceneInterval);
+      if (checkSceneInterval) {
+        clearInterval(checkSceneInterval);
+      }
     }, 5000);
 
     mv.addEventListener('finished', function() {

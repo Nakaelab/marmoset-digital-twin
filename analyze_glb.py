@@ -1,7 +1,7 @@
 import json
 import struct
 
-path = 'output (1).glb'
+path = 'outputkkj.glb'
 with open(path, 'rb') as f:
     header = f.read(12)
     magic, version, length = struct.unpack('<4sII', header)
