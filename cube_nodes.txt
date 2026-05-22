@@ -1,0 +1,14 @@
+mesh 0 Cube
+mesh 1 Cube.014
+mesh 2 Cube.038
+mesh 3 Cylinder.019
+mesh 4 Cube.056
+mesh 5 Cylinder.007
+mesh 36 Cylinder.008
+node 0 Cube mesh 0 children None
+node 1 Cube.007 mesh 1 children None
+node 2 Cube.024 mesh 2 children None
+node 3 Cylinder.003 mesh 3 children None
+node 4 Cube.010 mesh 4 children None
+node 5 Cylinder.017 mesh 36 children None
+node 6 Cylinder.016 mesh 5 children None

@@ -270,6 +270,39 @@
           </div>
         </model-viewer>
       </div>
+      <!-- Control UI Panel -->
+      <div id="debug-panel" class="box" style="margin-top: 1.5rem; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; background-color: #fcfcfc; max-width: 900px; margin-left: auto; margin-right: auto;">
+        <h3 class="title is-5 has-text-centered" style="margin-bottom: 0.5rem;">⚙️ マテリアル透過テスト (Material Transparency Test)</h3>
+        <p class="subtitle is-6 has-text-centered" style="margin-bottom: 1.25rem; color: #666;">
+          各マテリアルの透過（半透明）状態を切り替えて、どのマテリアルがどのパーツに対応しているか確認できます。
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; justify-items: start; max-width: 800px; margin: 0 auto; padding-left: 20px;">
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-1" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial001', this.checked)">
+            PaletteMaterial001 (Cube - 壁・床など)
+          </label>
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-2" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial002', this.checked)">
+            PaletteMaterial002 (Cube.007)
+          </label>
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-3" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial003', this.checked)">
+            PaletteMaterial003 (Cube.024)
+          </label>
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-4" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial004', this.checked)">
+            PaletteMaterial004 (Cube.010)
+          </label>
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-5" style="margin-right: 8px; transform: scale(1.1);" onchange="window.setMaterialTransparency('PaletteMaterial005', this.checked)">
+            PaletteMaterial005 (Cylinder.017)
+          </label>
+          <label class="checkbox" style="font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center;">
+            <input type="checkbox" id="toggle-mat-6" style="margin-right: 8px; transform: scale(1.1);" checked onchange="window.setMaterialTransparency('PaletteMaterial006', this.checked)">
+            PaletteMaterial006 (Cylinder.016 - 囲い)
+          </label>
+        </div>
+      </div>
       <h2 class="subtitle has-text-centered" style="margin-top:1rem;">
         <b>Figure:</b> 3D digital-twin environment model reconstructed from engineering blueprints of the marmoset recording room (Blender, blueprint-based alignment).
       </h2>
@@ -279,63 +312,82 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const mv = document.getElementById('marmoset-viewer');
-    if (mv) {
-      mv.addEventListener('load', function() {
-        mv.play({ repetitions: Infinity });
+    console.log('model-viewer script initialized');
+    if (!mv) return;
 
-        // ログ出力してマテリアル／メッシュ名を確認（必要に応じて名前を調整）
-        try {
-          const model = mv.model;
-          if (!model) { console.warn('model not available'); return; }
-          console.log('Materials:', model.materials ? model.materials.map(m => m && m.name) : 'no materials');
-          model.scene.traverse(node => {
-            if (node.isMesh) {
-              const matNames = Array.isArray(node.material) ? node.material.map(m=>m && m.name) : (node.material && node.material.name) || '(no name)';
-              console.log('mesh:', node.name, ' material:', matNames);
-            }
-          });
+    window.setMaterialTransparency = function(materialName, isTransparent) {
+      const model = mv.model;
+      if (!model) {
+        console.warn('model not available during toggle');
+        return;
+      }
 
-          // 対象判定（コンソールの出力に合わせて名前を追加してください）
-          const targetMaterialNames = ['PaletteMaterial006'];
-          const targetMeshNameIncludes = ['Wall','wall','Enclosure','enclosure','囲い','panel'];
+      const material = model.materials.find(m => m.name === materialName);
+      if (material) {
+        const pbr = material.pbrMetallicRoughness;
+        if (isTransparent) {
+          material.setAlphaMode('BLEND');
+          if (pbr) {
+            const base = pbr.baseColorFactor || [1, 1, 1, 1];
+            pbr.setBaseColorFactor([base[0], base[1], base[2], 0.2]);
+          }
+          console.log('Set ' + materialName + ' to transparent');
+        } else {
+          material.setAlphaMode('OPAQUE');
+          if (pbr) {
+            const base = pbr.baseColorFactor || [1, 1, 1, 1];
+            pbr.setBaseColorFactor([base[0], base[1], base[2], 1.0]);
+          }
+          console.log('Set ' + materialName + ' to opaque');
+        }
+      }
+    };
 
-          // 対象メッシュだけマテリアルをクローンして透過設定を適用（共有マテリアルによる全体透過を防ぐ）
-          model.scene.traverse(node => {
-            if (!node.isMesh) return;
-            let mats = Array.isArray(node.material) ? node.material : [node.material];
-            const isTarget = mats.some(mat => mat && targetMaterialNames.includes(mat.name)) ||
-                             targetMeshNameIncludes.some(s => node.name && node.name.includes(s));
-            if (!isTarget) return;
+    function initModelData() {
+      console.log('model-viewer loaded');
+      mv.play({ repetitions: Infinity });
 
-            // マテリアルをクローン
-            if (Array.isArray(node.material)) {
-              node.material = node.material.map(m => m ? m.clone() : m);
-              mats = node.material;
-            } else {
-              node.material = node.material ? node.material.clone() : node.material;
-              mats = [node.material];
-            }
+      // Synchronize material state with checkboxes upon loading
+      const materialNames = [
+        'PaletteMaterial001',
+        'PaletteMaterial002',
+        'PaletteMaterial003',
+        'PaletteMaterial004',
+        'PaletteMaterial005',
+        'PaletteMaterial006'
+      ];
 
-            // 透過を適用
-            mats.forEach(mat => {
-              try {
-                if (mat.setAlphaMode) mat.setAlphaMode('BLEND');
-                if (mat.pbrMetallicRoughness && mat.pbrMetallicRoughness.setBaseColorFactor) {
-                  const base = mat.pbrMetallicRoughness.baseColorFactor || [1,1,1,1];
-                  mat.pbrMetallicRoughness.setBaseColorFactor([base[0], base[1], base[2], 0.25]);
-                } else {
-                  if ('transparent' in mat) { mat.transparent = true; mat.opacity = 0.25; mat.depthWrite = false; }
-                }
-              } catch(e) { console.warn('apply transparency failed', e); }
-            });
-          });
-
-        } catch(e) { console.error(e); }
-      });
-      mv.addEventListener('finished', function() {
-        mv.play({ repetitions: Infinity });
-      });
+      const model = mv.model;
+      if (model) {
+        materialNames.forEach((name, index) => {
+          const chk = document.getElementById('toggle-mat-' + (index + 1));
+          if (chk) {
+            window.setMaterialTransparency(name, chk.checked);
+          }
+        });
+      }
     }
+
+    mv.addEventListener('load', initModelData);
+
+    const checkSceneInterval = setInterval(() => {
+      const model = mv.model;
+      if (model && model.materials && model.materials.length > 0) {
+        const material = model.materials.find(m => m.name === 'PaletteMaterial006');
+        if (material) {
+          clearInterval(checkSceneInterval);
+          initModelData();
+        }
+      }
+    }, 200);
+
+    setTimeout(() => {
+      clearInterval(checkSceneInterval);
+    }, 5000);
+
+    mv.addEventListener('finished', function() {
+      mv.play({ repetitions: Infinity });
+    });
   });
 </script>
 <!-- End 3D Environment Model Viewer -->
