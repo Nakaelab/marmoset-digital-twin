@@ -124,3 +124,40 @@ document.addEventListener('DOMContentLoaded', function() {
     setupVideoCarouselAutoplay();
 });
 
+// Camera controls helper for model-viewer overlay buttons
+window.controlCamera = function(viewerId, action) {
+    const mv = document.getElementById(viewerId);
+    if (!mv) return;
+    
+    const orbit = mv.getCameraOrbit();
+    if (!orbit) return;
+    
+    let { theta, phi, radius } = orbit;
+    const thetaStep = 0.2; // radians (about 11 degrees)
+    const phiStep = 0.15;  // radians
+    const zoomFactor = 0.85; // multiplier for zoom in / zoom out
+    
+    switch(action) {
+        case 'left':
+            theta -= thetaStep;
+            break;
+        case 'right':
+            theta += thetaStep;
+            break;
+        case 'up':
+            phi = Math.max(0.05, phi - phiStep);
+            break;
+        case 'down':
+            phi = Math.min(Math.PI - 0.05, phi + phiStep);
+            break;
+        case 'zoom-in':
+            radius = radius * zoomFactor;
+            break;
+        case 'zoom-out':
+            radius = radius / zoomFactor;
+            break;
+    }
+    
+    mv.cameraOrbit = `${theta}rad ${phi}rad ${radius}m`;
+};
+
