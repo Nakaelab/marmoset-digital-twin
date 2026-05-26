@@ -278,7 +278,7 @@
           </div>
           <!-- Marmoset POV PIP Window -->
           <div style="position:absolute; bottom:12px; left:12px; width:240px; height:180px; border-radius:10px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.4); border:2px solid rgba(255,255,255,0.3); z-index:10;">
-            <iframe src="https://nakaelab.github.io/marmoset-cam/?embed" style="width:100%; height:100%; border:none; pointer-events:none;" title="Marmoset POV Camera" loading="lazy"></iframe>
+            <iframe id="marmoset-pov-iframe" src="https://nakaelab.github.io/marmoset-cam/?embed" style="width:100%; height:100%; border:none; pointer-events:none;" title="Marmoset POV Camera" loading="lazy"></iframe>
           </div>
         </model-viewer>
       </div>
@@ -294,6 +294,20 @@
     const mv = document.getElementById('marmoset-viewer');
     console.log('model-viewer script initialized');
     if (!mv) return;
+
+    // Synchronize animation time with the POV iframe
+    const iframe = document.getElementById('marmoset-pov-iframe');
+    function syncAnimation() {
+      if (mv && iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({
+          type: 'sync-time',
+          currentTime: mv.currentTime,
+          paused: mv.paused
+        }, '*');
+      }
+      requestAnimationFrame(syncAnimation);
+    }
+    syncAnimation();
 
     window.setMaterialTransparency = function(materialName, isTransparent) {
       const model = mv.model;
