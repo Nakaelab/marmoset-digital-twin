@@ -276,6 +276,11 @@
             <button class="viewer-control-btn" onpointerdown="window.startCameraControl('marmoset-viewer', 'zoom-in')" onpointerup="window.stopCameraControl()" onpointerleave="window.stopCameraControl()" onpointercancel="window.stopCameraControl()" oncontextmenu="return false;" title="Zoom In"><i class="fas fa-plus"></i></button>
             <button class="viewer-control-btn" onpointerdown="window.startCameraControl('marmoset-viewer', 'zoom-out')" onpointerup="window.stopCameraControl()" onpointerleave="window.stopCameraControl()" onpointercancel="window.stopCameraControl()" oncontextmenu="return false;" title="Zoom Out"><i class="fas fa-minus"></i></button>
           </div>
+          <!-- Marmoset POV PIP Window -->
+          <div style="position:absolute; bottom:12px; left:12px; width:240px; height:180px; border-radius:10px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.4); border:2px solid rgba(255,255,255,0.3); z-index:10;">
+            <iframe src="https://nakaelab.github.io/marmoset-cam/" style="width:100%; height:100%; border:none; pointer-events:none;" title="Marmoset POV Camera" loading="lazy"></iframe>
+            <div style="position:absolute; top:6px; left:8px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 8px; border-radius:4px; font-family:'Outfit',sans-serif; letter-spacing:0.5px;">🎥 Marmoset POV</div>
+          </div>
         </model-viewer>
       </div>
 
