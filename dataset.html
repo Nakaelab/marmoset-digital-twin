@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <title>Marmoset 3D Digital Twin Dataset | AWS Download Portal</title>
+  <meta name="title" content="Marmoset 3D Digital Twin Dataset | AWS Download Portal">
+  <meta name="description" content="Download portal for the multimodal common marmoset 3D digital twin dataset, including CT scan data, rigged models, pose estimation weights, 2D/3D keypoints, and environment models.">
+  <meta name="theme-color" content="#2563eb">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Critical CSS -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  
+  <!-- Custom Styling for Download Portal -->
+  <style>
+    body {
+      background-color: var(--background-secondary);
+    }
+    
+    .dataset-hero {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      padding: 6rem 1.5rem 4rem;
+      position: relative;
+    }
+    
+    .dataset-hero .publication-title {
+      color: white !important;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .dataset-hero .breadcrumb {
+      margin-bottom: 1.5rem;
+    }
+    
+    .dataset-hero .breadcrumb a, 
+    .dataset-hero .breadcrumb span {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .dataset-hero .breadcrumb a:hover {
+      color: white;
+    }
+    
+    /* Glassmorphism Key Metrics */
+    .metrics-glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius-lg);
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 900px;
+      margin: 2rem auto 0;
+    }
+    
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      text-align: center;
+    }
+    
+    .metric-item {
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .metric-item:last-child {
+      border-right: none;
+    }
+    
+    .metric-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    
+    .metric-label {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+    
+    /* Cards & Tables */
+    .card-dataset {
+      background: var(--background-primary);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .card-dataset:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .card-header-custom {
+      background: var(--background-accent);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .card-header-title-custom {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    
+    .table-dataset {
+      width: 100%;
+      margin: 0;
+    }
+    
+    .table-dataset th {
+      background-color: transparent;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .table-dataset td {
+      padding: 1.25rem 1.5rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .table-dataset tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Code Snippets & Copy block */
+    .cli-generator {
+      position: sticky;
+      top: 2rem;
+    }
+    
+    .cli-card {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: var(--border-radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid #1e293b;
+    }
+    
+    .cli-card h3 {
+      color: white;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .code-box {
+      background: #1e293b;
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      margin-top: 1rem;
+      position: relative;
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      border: 1px solid #334155;
+    }
+    
+    .code-box code {
+      background: transparent !important;
+      color: #38bdf8 !important;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    
+    .btn-copy-cli {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: var(--transition);
+    }
+    
+    .btn-copy-cli:hover {
+      background: var(--primary-color);
+    }
+    
+    /* CLI OS Accordion */
+    .cli-guide-accordion {
+      margin-top: 1.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      background: var(--background-primary);
+      overflow: hidden;
+    }
+    
+    .cli-guide-header {
+      padding: 1rem;
+      background: var(--background-accent);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    
+    .cli-guide-content {
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+      display: none;
+    }
+    
+    .cli-guide-content.show {
+      display: block;
+    }
+    
+    /* Responsive fixes */
+    @media screen and (max-width: 768px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .metric-item:nth-child(2) {
+        border-right: none;
+      }
+      .metric-item:nth-child(4) {
+        border-right: none;
+      }
+      .table-dataset th, .table-dataset td {
+        padding: 0.75rem 1rem;
+      }
+    }
+    @media screen and (max-width: 480px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .metric-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 0.5rem;
+      }
+      .metric-item:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
+  
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+</head>
+<body>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Works from Our Lab</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <a href="https://github.com/iwtkk/3D_digital_twin_marmoset_code" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>3D Digital Twin Marmoset Code</h5>
+            <p>Code repository for the 3D digital twin marmoset dataset construction and analysis pipeline.</p>
+            <span class="work-venue">GitHub 2026</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Banner -->
+  <header class="hero dataset-hero">
+    <div class="container is-max-desktop">
+      <div class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li class="is-active"><a href="#" aria-current="page">Dataset Download</a></li>
+        </ul>
+      </div>
+      
+      <div class="has-text-centered">
+        <h1 class="title is-1 publication-title">Marmoset 3D Digital Twin Dataset</h1>
+        <p class="subtitle is-5 text-light" style="color: rgba(255,255,255,0.8);">
+          AWS Download Portal &amp; File Explorer
+        </p>
+        
+        <!-- Metrics Panel -->
+        <div class="metrics-glass">
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-val">C. jacchus</div>
+              <div class="metric-label">Species</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-val">~3.0 TB</div>
+              <div class="metric-label">Total Size</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-val">3</div>
+              <div class="metric-label">Subjects</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-val">~90 hours</div>
+              <div class="metric-label">Behavior Video</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-val" style="font-size: 1rem;">ap-northeast-1</div>
+              <div class="metric-label">AWS Region</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-multiline">
+        
+        <!-- Left Side: Dataset Tables (8 columns) -->
+        <div class="column is-8">
+          
+          <!-- Category: Body Data -->
+          <div class="card-dataset">
+            <div class="card-header-custom">
+              <span class="icon" style="color: #2563eb;"><i class="fas fa-bone fa-lg"></i></span>
+              <h2 class="card-header-title-custom">🦴 3D Marmoset Body Data</h2>
+            </div>
+            <div class="table-container">
+              <table class="table table-dataset is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>CT_scan_data.nii</strong><br>
+                      <small class="has-text-grey">Raw CT scan image volume of the common marmoset body.</small>
+                    </td>
+                    <td>667 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/CT_scan_data.nii" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Marmoset_surface.stl</strong><br>
+                      <small class="has-text-grey">CT-derived 3D surface mesh file of the marmoset skin surface.</small>
+                    </td>
+                    <td>2.1 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Marmoset_surface.stl" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Segmentation.stl</strong><br>
+                      <small class="has-text-grey">High-resolution segmentation mesh of internal body tissues.</small>
+                    </td>
+                    <td>162.2 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Segmentation.stl" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Segmentation.nii.gz</strong><br>
+                      <small class="has-text-grey">Compressed NIfTI volume representing anatomical segmentations.</small>
+                    </td>
+                    <td>3.9 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Segmentation.nii.gz" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>3dmarmoset.blend</strong><br>
+                      <small class="has-text-grey">Full rigged Blender model with skeletal IK bones &amp; HairCurves fur.</small>
+                    </td>
+                    <td>169.8 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/3dmarmoset.blend" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>3dmarmoset_simplified.blend</strong><br>
+                      <small class="has-text-grey">Optimized rigged model with reduced vertex count for fast animation rendering.</small>
+                    </td>
+                    <td>201.9 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/3dmarmoset_simplified.blend" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Category: Environment and Twin -->
+          <div class="card-dataset">
+            <div class="card-header-custom" style="background: rgba(14, 165, 233, 0.08);">
+              <span class="icon" style="color: #0ea5e9;"><i class="fas fa-vr-cardboard fa-lg"></i></span>
+              <h2 class="card-header-title-custom">🏗️ 3D Environment &amp; Digital Twin</h2>
+            </div>
+            <div class="table-container">
+              <table class="table table-dataset is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>File / Directory</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>environment_measurement.blend</strong><br>
+                      <small class="has-text-grey">Blueprint-based 3D environment cage and recording chamber reconstruction model.</small>
+                    </td>
+                    <td>587.5 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_environmental_data/environment_measurement.blend" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>3D_digitaltwin_marmoset_blender.blend</strong><br>
+                      <small class="has-text-grey">Integrated digital twin project file in Blender containing master setup.</small>
+                    </td>
+                    <td>147.9 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_digital_twin_data/3D_digitaltwin_marmoset_blender.blend" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>3D_digitaltwin_marmoset_blender_files/</strong><br>
+                      <span class="tag is-warning is-light"><i class="fas fa-folder mr-1"></i> Directory</span><br>
+                      <small class="has-text-grey">Folder containing individual session animation blend files (cj611, cj425, cj357).</small>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html#3D_digital_twin_data/3D_digitaltwin_marmoset_blender_files/" target="_blank" class="button is-small is-warning is-outlined is-rounded">
+                        <span class="icon"><i class="fas fa-folder-open"></i></span>
+                        <span>Browse S3</span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Category: Keypoints & Models -->
+          <div class="card-dataset">
+            <div class="card-header-custom" style="background: rgba(168, 85, 247, 0.08);">
+              <span class="icon" style="color: #a855f7;"><i class="fas fa-chart-line fa-lg"></i></span>
+              <h2 class="card-header-title-custom">📐 2D/3D Keypoint &amp; Model Weights</h2>
+            </div>
+            <div class="table-container">
+              <table class="table table-dataset is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>File / Directory</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>detection.pth</strong><br>
+                      <small class="has-text-grey">YOLOX trained detection model weights (.pth) for bounding box tracking.</small>
+                    </td>
+                    <td>620.9 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/detection.pth" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>id.pth</strong><br>
+                      <small class="has-text-grey">Re-identification model weights (.pth) for individual tracking.</small>
+                    </td>
+                    <td>179.8 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/id.pth" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>pose_marmo20_best_epoch.pth</strong><br>
+                      <small class="has-text-grey">HRNet-w48 trained pose estimation model weights for 20 anatomical keypoints.</small>
+                    </td>
+                    <td>729.2 MB</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/pose_marmo20_best_epoch.pth" class="button is-small is-link is-rounded">
+                        <span class="icon"><i class="fas fa-download"></i></span>
+                        <span>Download</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>2D_temporal_keypoint_data/</strong><br>
+                      <span class="tag is-warning is-light"><i class="fas fa-folder mr-1"></i> Directory</span><br>
+                      <small class="has-text-grey">2D trajectory coordinates (.csv) estimated from 8 cameras across sessions.</small>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html#marmoset_keypoint_data/2D_temporal_keypoint_data/" target="_blank" class="button is-small is-warning is-outlined is-rounded">
+                        <span class="icon"><i class="fas fa-folder-open"></i></span>
+                        <span>Browse S3</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>3D_temporal_keypoint_data/</strong><br>
+                      <span class="tag is-warning is-light"><i class="fas fa-folder mr-1"></i> Directory</span><br>
+                      <small class="has-text-grey">3D reconstructed coordinates (.csv) after Hungarian matching &amp; Anipose smoothing.</small>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html#marmoset_keypoint_data/3D_temporal_keypoint_data/" target="_blank" class="button is-small is-warning is-outlined is-rounded">
+                        <span class="icon"><i class="fas fa-folder-open"></i></span>
+                        <span>Browse S3</span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Category: Videos -->
+          <div class="card-dataset">
+            <div class="card-header-custom" style="background: rgba(245, 158, 11, 0.08);">
+              <span class="icon" style="color: #f59e0b;"><i class="fas fa-video fa-lg"></i></span>
+              <h2 class="card-header-title-custom">🎥 Multi-view Behavioral Video</h2>
+            </div>
+            <div class="table-container">
+              <table class="table table-dataset is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>Directory</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>video_data/</strong><br>
+                      <span class="tag is-warning is-light"><i class="fas fa-folder mr-1"></i> Directory</span>
+                    </td>
+                    <td>
+                      ~90 hours total synchronized multi-view recording across 8 cameras (Basler acA2040-35gc, 2048x1536, 24fps) for 3 individuals:<br>
+                      <span class="tag is-light">cj611 (55.46 h)</span>
+                      <span class="tag is-light">cj425 (33.38 h)</span>
+                      <span class="tag is-light">cj357 (1.33 h)</span>
+                    </td>
+                    <td>
+                      <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html#marmoset_keypoint_data/video_data/" target="_blank" class="button is-small is-warning is-outlined is-rounded">
+                        <span class="icon"><i class="fas fa-folder-open"></i></span>
+                        <span>Browse S3</span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Right Side: AWS CLI & Instructions (4 columns) -->
+        <div class="column is-4">
+          <div class="cli-generator">
+            
+            <!-- CLI Copy Panel -->
+            <div class="cli-card">
+              <h3><i class="fab fa-aws"></i> AWS CLI Downloader</h3>
+              <p class="is-size-7" style="color: #94a3b8; margin-bottom: 1rem;">
+                Select a dataset category below to copy the AWS CLI command. Use this command in your terminal to download files securely and quickly without browser limits.
+              </p>
+              
+              <div class="field">
+                <label class="label" style="color: white; font-size: 0.85rem;">Select Dataset Component:</label>
+                <div class="control">
+                  <div class="select is-fullwidth is-small">
+                    <select id="cliSelect" onchange="updateCliCommand()" style="background: #1e293b; color: white; border-color: #334155;">
+                      <option value="ct-data">🦴 CT scan files (all .nii/.stl)</option>
+                      <option value="body-blender">🦴 Blender Rigged Model file</option>
+                      <option value="env-model">🏗️ 3D Cage & Environment Model</option>
+                      <option value="twin-blender">🏗️ Rigged Digital Twin Model</option>
+                      <option value="session-blends">🏗️ Blender Animation files (All sessions)</option>
+                      <option value="model-weights">📐 Pose Estimation trained model weights</option>
+                      <option value="2d-kps">📐 2D temporal keypoint trajectories</option>
+                      <option value="3d-kps">📐 3D temporal keypoint trajectories</option>
+                      <option value="behavior-videos">🎥 Behavioral Videos (~90 hours)</option>
+                      <option value="entire-bucket">📦 Entire S3 Bucket (~3 TB)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="code-box">
+                <button class="btn-copy-cli" onclick="copyCliCommand()">
+                  <i class="fas fa-copy mr-1"></i> <span id="copyText">Copy</span>
+                </button>
+                <code id="cliCommand">aws s3 cp s3://digitaltwin-marmoset/3D_marmoset_body_data/CT_scan_data/ . --recursive --no-sign-request</code>
+              </div>
+            </div>
+            
+            <!-- AWS CLI Installation Guide -->
+            <div class="cli-guide-accordion">
+              <div class="cli-guide-header" onclick="toggleAccordion('guideContent')">
+                <span><i class="fas fa-terminal mr-2" style="color: #2563eb;"></i> AWS CLI Install Guide</span>
+                <i class="fas fa-chevron-down" id="accordionArrow"></i>
+              </div>
+              <div class="cli-guide-content" id="guideContent">
+                <div class="tabs is-toggle is-fullwidth is-small mb-2">
+                  <ul>
+                    <li class="is-active" id="tab-win" onclick="switchOsTab('win')"><a>Windows</a></li>
+                    <li id="tab-mac" onclick="switchOsTab('mac')"><a>macOS</a></li>
+                    <li id="tab-lin" onclick="switchOsTab('lin')"><a>Linux</a></li>
+                  </ul>
+                </div>
+                
+                <div id="guide-win" class="os-guide">
+                  <p class="is-size-7 mb-2">Run the installer command in PowerShell:</p>
+                  <pre style="padding: 0.5rem !important; font-size: 0.75rem !important; background: #f1f5f9 !important;"><code>msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi</code></pre>
+                </div>
+                <div id="guide-mac" class="os-guide" style="display:none;">
+                  <p class="is-size-7 mb-2">Download and run the installer:</p>
+                  <pre style="padding: 0.5rem !important; font-size: 0.75rem !important; background: #f1f5f9 !important;"><code>curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /</code></pre>
+                </div>
+                <div id="guide-lin" class="os-guide" style="display:none;">
+                  <p class="is-size-7 mb-2">Extract and run installation scripts:</p>
+                  <pre style="padding: 0.5rem !important; font-size: 0.75rem !important; background: #f1f5f9 !important;"><code>curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install</code></pre>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Raw S3 Explorer Link -->
+            <div style="margin-top: 1.5rem;">
+              <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html" target="_blank" class="button is-fullwidth is-outlined is-link">
+                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+                <span>Open S3 Object Explorer</span>
+              </a>
+            </div>
+            
+            <!-- License Info Card -->
+            <div class="card" style="margin-top: 1.5rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+              <div class="card-content" style="padding: 1rem 1.25rem;">
+                <h4 class="title is-6" style="margin-bottom: 0.5rem;">Dataset License</h4>
+                <p class="is-size-7 has-text-grey" style="line-height: 1.4; margin-bottom: 0.75rem;">
+                  This dataset is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0).
+                </p>
+                <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="is-inline-block">
+                  <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png" alt="CC BY-SA" width="88">
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              This dataset download portal was designed for the <strong>Marmoset 3D Digital Twin</strong> project.<br>
+              Main page templates adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
+            </p>
+            <p class="is-size-7 has-text-grey-light mt-2">
+              © 2026 Iwata et al. &bull; University of Fukui &bull; National Institute for Physiological Sciences
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // AWS CLI Commands mapped to select value
+    const cliCommands = {
+      'ct-data': 'aws s3 cp s3://digitaltwin-marmoset/3D_marmoset_body_data/CT_scan_data/ . --recursive --no-sign-request',
+      'body-blender': 'aws s3 cp s3://digitaltwin-marmoset/3D_marmoset_body_data/3dmarmoset.blend . --no-sign-request',
+      'env-model': 'aws s3 cp s3://digitaltwin-marmoset/3D_environmental_data/environment_measurement.blend . --no-sign-request',
+      'twin-blender': 'aws s3 cp s3://digitaltwin-marmoset/3D_digital_twin_data/3D_digitaltwin_marmoset_blender.blend . --no-sign-request',
+      'session-blends': 'aws s3 cp s3://digitaltwin-marmoset/3D_digital_twin_data/3D_digitaltwin_marmoset_blender_files/ . --recursive --no-sign-request',
+      'model-weights': 'aws s3 cp s3://digitaltwin-marmoset/marmoset_keypoint_data/trained_model/ . --recursive --no-sign-request',
+      '2d-kps': 'aws s3 cp s3://digitaltwin-marmoset/marmoset_keypoint_data/2D_temporal_keypoint_data/ . --recursive --no-sign-request',
+      '3d-kps': 'aws s3 cp s3://digitaltwin-marmoset/marmoset_keypoint_data/3D_temporal_keypoint_data/ . --recursive --no-sign-request',
+      'behavior-videos': 'aws s3 cp s3://digitaltwin-marmoset/marmoset_keypoint_data/video_data/ . --recursive --no-sign-request',
+      'entire-bucket': 'aws s3 sync s3://digitaltwin-marmoset/ . --no-sign-request'
+    };
+
+    function updateCliCommand() {
+      const select = document.getElementById('cliSelect');
+      const commandCode = document.getElementById('cliCommand');
+      const val = select.value;
+      if (cliCommands[val]) {
+        commandCode.textContent = cliCommands[val];
+      }
+    }
+
+    function copyCliCommand() {
+      const commandText = document.getElementById('cliCommand').textContent;
+      const copyBtn = document.getElementById('copyText');
+      
+      navigator.clipboard.writeText(commandText).then(() => {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    }
+
+    function toggleAccordion(id) {
+      const content = document.getElementById(id);
+      const arrow = document.getElementById('accordionArrow');
+      if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        arrow.style.transform = 'rotate(0deg)';
+      } else {
+        content.classList.add('show');
+        arrow.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    function switchOsTab(os) {
+      // Deactivate all tabs
+      document.getElementById('tab-win').classList.remove('is-active');
+      document.getElementById('tab-mac').classList.remove('is-active');
+      document.getElementById('tab-lin').classList.remove('is-active');
+      
+      // Hide all guides
+      document.getElementById('guide-win').style.display = 'none';
+      document.getElementById('guide-mac').style.display = 'none';
+      document.getElementById('guide-lin').style.display = 'none';
+      
+      // Activate target tab & guide
+      document.getElementById('tab-' + os).classList.add('is-active');
+      document.getElementById('guide-' + os).style.display = 'block';
+    }
+  </script>
+</body>
+</html>
