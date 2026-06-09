@@ -251,6 +251,78 @@
       display: block;
     }
     
+    /* S3 Explorer Alert Banner */
+    .s3-explorer-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(255, 153, 0, 0.35);
+      border-radius: var(--border-radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+    
+    .s3-explorer-banner:hover {
+      border-color: rgba(255, 153, 0, 0.6);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .s3-banner-content {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    
+    .s3-banner-icon {
+      color: #ff9900;
+      background: rgba(255, 153, 0, 0.1);
+      padding: 0.75rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .s3-banner-title {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 0 0 0.25rem 0;
+    }
+    
+    .s3-banner-desc {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    .s3-banner-btn {
+      background: linear-gradient(135deg, #ff9900 0%, #e07b00 100%) !important;
+      color: white !important;
+      border: none !important;
+      font-weight: 600 !important;
+      padding: 0.75rem 1.5rem !important;
+      border-radius: 8px !important;
+      box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+      transition: all 0.3s ease !important;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .s3-banner-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4);
+      opacity: 0.95;
+    }
+    
     /* Responsive fixes */
     @media screen and (max-width: 768px) {
       .metrics-grid {
@@ -265,6 +337,19 @@
       }
       .table-dataset th, .table-dataset td {
         padding: 0.75rem 1rem;
+      }
+      .s3-explorer-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+        padding: 1.25rem;
+      }
+      .s3-banner-content {
+        gap: 1rem;
+      }
+      .s3-banner-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
     @media screen and (max-width: 480px) {
@@ -371,6 +456,23 @@
         
         <!-- Left Side: Dataset Tables (8 columns) -->
         <div class="column is-8">
+          
+          <!-- S3 Explorer Banner -->
+          <div class="s3-explorer-banner">
+            <div class="s3-banner-content">
+              <div class="s3-banner-icon">
+                <i class="fas fa-folder-open fa-2x"></i>
+              </div>
+              <div class="s3-banner-text">
+                <h3 class="s3-banner-title">Open S3 Object Explorer</h3>
+                <p class="s3-banner-desc">Browse, search, and download all files directly in your web browser without using the CLI.</p>
+              </div>
+            </div>
+            <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html" target="_blank" class="button s3-banner-btn">
+              <span>Launch Explorer</span>
+              <span class="icon"><i class="fas fa-external-link-alt"></i></span>
+            </a>
+          </div>
           
           <!-- Category: Body Data -->
           <div class="card-dataset">
@@ -732,15 +834,6 @@ sudo ./aws/install</code></pre>
                 </div>
               </div>
             </div>
-            
-            <!-- Raw S3 Explorer Link -->
-            <div style="margin-top: 1.5rem;">
-              <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/index.html" target="_blank" class="button is-fullwidth is-outlined is-link">
-                <span class="icon"><i class="fas fa-external-link-alt"></i></span>
-                <span>Open S3 Object Explorer</span>
-              </a>
-            </div>
-            
             <!-- License Info Card -->
             <div class="card" style="margin-top: 1.5rem; border-radius: var(--border-radius); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
               <div class="card-content" style="padding: 1rem 1.25rem;">
