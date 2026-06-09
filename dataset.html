@@ -335,23 +335,96 @@
       .metric-item:nth-child(4) {
         border-right: none;
       }
-      .table-dataset th, .table-dataset td {
-        padding: 0.75rem 1rem;
+      
+      .cli-generator {
+        position: relative;
+        top: 0;
+        margin-top: 1.5rem;
       }
+      
+      /* Mobile Table Card Layout */
+      .table-dataset, 
+      .table-dataset thead, 
+      .table-dataset tbody, 
+      .table-dataset tr, 
+      .table-dataset td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .table-dataset thead {
+        display: none;
+      }
+      
+      .table-dataset tr {
+        border-bottom: 1px solid var(--border-color);
+        padding: 1.25rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      
+      .table-dataset tr:last-child {
+        border-bottom: none;
+      }
+      
+      .table-dataset td {
+        border: none !important;
+        padding: 0 !important;
+      }
+      
+      /* File description/text adjustment */
+      .table-dataset td br {
+        display: none; /* Hide <br> on mobile for cleaner look */
+      }
+      
+      .table-dataset td small {
+        display: block;
+        margin-top: 0.25rem;
+      }
+      
+      /* Size representation */
+      .table-dataset td.dataset-size {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+      
+      .table-dataset td.dataset-size::before {
+        content: "Size: ";
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      
+      .table-dataset td:last-child {
+        margin-top: 0.25rem;
+      }
+      
+      .table-dataset td:last-child .button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0.6rem 1rem;
+        height: auto;
+      }
+      
       .s3-explorer-banner {
         flex-direction: column;
         align-items: flex-start;
         gap: 1.25rem;
         padding: 1.25rem;
       }
+      
       .s3-banner-content {
         gap: 1rem;
       }
+      
       .s3-banner-btn {
         width: 100%;
         justify-content: center;
       }
     }
+    
     @media screen and (max-width: 480px) {
       .metrics-grid {
         grid-template-columns: 1fr;
@@ -359,10 +432,23 @@
       .metric-item {
         border-right: none;
         border-bottom: 1px solid rgba(255,255,255,0.1);
-        padding-bottom: 0.5rem;
+        padding: 0.75rem 0;
       }
       .metric-item:last-child {
         border-bottom: none;
+      }
+      
+      .s3-explorer-banner {
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+      }
+      
+      .s3-banner-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
       }
     }
   </style>
@@ -495,7 +581,7 @@
                       <strong>CT_scan_data.nii</strong><br>
                       <small class="has-text-grey">Raw CT scan image volume of the common marmoset body.</small>
                     </td>
-                    <td>667 MB</td>
+                    <td class="dataset-size">667 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/CT_scan_data.nii" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -508,7 +594,7 @@
                       <strong>Marmoset_surface.stl</strong><br>
                       <small class="has-text-grey">CT-derived 3D surface mesh file of the marmoset skin surface.</small>
                     </td>
-                    <td>2.1 MB</td>
+                    <td class="dataset-size">2.1 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Marmoset_surface.stl" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -521,7 +607,7 @@
                       <strong>Segmentation.stl</strong><br>
                       <small class="has-text-grey">High-resolution segmentation mesh of internal body tissues.</small>
                     </td>
-                    <td>162.2 MB</td>
+                    <td class="dataset-size">162.2 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Segmentation.stl" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -534,7 +620,7 @@
                       <strong>Segmentation.nii.gz</strong><br>
                       <small class="has-text-grey">Compressed NIfTI volume representing anatomical segmentations.</small>
                     </td>
-                    <td>3.9 MB</td>
+                    <td class="dataset-size">3.9 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/CT_scan_data/Segmentation.nii.gz" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -547,7 +633,7 @@
                       <strong>3dmarmoset.blend</strong><br>
                       <small class="has-text-grey">Full rigged Blender model with skeletal IK bones &amp; HairCurves fur.</small>
                     </td>
-                    <td>169.8 MB</td>
+                    <td class="dataset-size">169.8 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/3dmarmoset.blend" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -560,7 +646,7 @@
                       <strong>3dmarmoset_simplified.blend</strong><br>
                       <small class="has-text-grey">Optimized rigged model with reduced vertex count for fast animation rendering.</small>
                     </td>
-                    <td>201.9 MB</td>
+                    <td class="dataset-size">201.9 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_marmoset_body_data/3dmarmoset_simplified.blend" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -594,7 +680,7 @@
                       <strong>environment_measurement.blend</strong><br>
                       <small class="has-text-grey">Blueprint-based 3D environment cage and recording chamber reconstruction model.</small>
                     </td>
-                    <td>587.5 MB</td>
+                    <td class="dataset-size">587.5 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_environmental_data/environment_measurement.blend" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -607,7 +693,7 @@
                       <strong>3D_digitaltwin_marmoset_blender.blend</strong><br>
                       <small class="has-text-grey">Integrated digital twin project file in Blender containing master setup.</small>
                     </td>
-                    <td>147.9 MB</td>
+                    <td class="dataset-size">147.9 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/3D_digital_twin_data/3D_digitaltwin_marmoset_blender.blend" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -655,7 +741,7 @@
                       <strong>detection.pth</strong><br>
                       <small class="has-text-grey">YOLOX trained detection model weights (.pth) for bounding box tracking.</small>
                     </td>
-                    <td>620.9 MB</td>
+                    <td class="dataset-size">620.9 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/detection.pth" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -668,7 +754,7 @@
                       <strong>id.pth</strong><br>
                       <small class="has-text-grey">Re-identification model weights (.pth) for individual tracking.</small>
                     </td>
-                    <td>179.8 MB</td>
+                    <td class="dataset-size">179.8 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/id.pth" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
@@ -681,7 +767,7 @@
                       <strong>pose_marmo20_best_epoch.pth</strong><br>
                       <small class="has-text-grey">HRNet-w48 trained pose estimation model weights for 20 anatomical keypoints.</small>
                     </td>
-                    <td>729.2 MB</td>
+                    <td class="dataset-size">729.2 MB</td>
                     <td>
                       <a href="https://digitaltwin-marmoset.s3.ap-northeast-1.amazonaws.com/marmoset_keypoint_data/trained_model/pose_marmo20_best_epoch.pth" class="button is-small is-link is-rounded">
                         <span class="icon"><i class="fas fa-download"></i></span>
