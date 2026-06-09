@@ -69,13 +69,18 @@
     
     .metrics-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr 1fr 1.2fr;
-      gap: 1.5rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
       text-align: center;
+      align-items: stretch;
     }
     
     .metric-item {
       border-right: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.5rem 0.25rem;
     }
     
     .metric-item:last-child {
@@ -83,17 +88,19 @@
     }
     
     .metric-val {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: #38bdf8;
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
     }
     
     .metric-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-top: 0.25rem;
+      margin-top: auto;
     }
     
     /* Cards & Tables */
@@ -332,7 +339,7 @@
         <div class="metrics-glass">
           <div class="metrics-grid">
             <div class="metric-item">
-              <div class="metric-val" style="font-size: 0.95rem; font-style: italic;">Callithrix jacchus</div>
+              <div class="metric-val" style="font-style: italic;">Callithrix<br>jacchus</div>
               <div class="metric-label">Species</div>
             </div>
             <div class="metric-item">
@@ -348,7 +355,7 @@
               <div class="metric-label">Behavior Video</div>
             </div>
             <div class="metric-item">
-              <div class="metric-val" style="font-size: 1rem;">ap-northeast-1</div>
+              <div class="metric-val">ap-northeast-1</div>
               <div class="metric-label">AWS Region</div>
             </div>
           </div>
